@@ -7,8 +7,13 @@ public class HauteCuisineMaitreD {
     private final List<Integer> _tableSizes;
     private final Map<Date, List<Integer>> _reservations;
 
-    public HauteCuisineMaitreD(List<Integer> tableSizes) {
-        _tableSizes = tableSizes;
+    public HauteCuisineMaitreD(int... tableSizes) {
+        _tableSizes = new ArrayList<>();
+
+        for (int t: tableSizes) {
+            _tableSizes.add(t);
+        }
+
         _reservations = new HashMap<>();
     }
 
