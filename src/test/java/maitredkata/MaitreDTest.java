@@ -2,7 +2,9 @@ package maitredkata;
 
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static org.junit.Assert.*;
 
@@ -56,6 +58,29 @@ public class MaitreDTest {
         assertTrue(subject.reserve(date, 3));
 
         assertFalse(subject.reserve(date, 3));
+    }
+
+    @Test
+    public void handlesMultipleDates() {
+        MaitreD subject = new MaitreD(4);
+        Date d1 = new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime();
+        Date d2 = new GregorianCalendar(2021, Calendar.JANUARY, 2).getTime();
+        subject.reserve(d1, 3);
+
+        assertTrue(subject.reserve(d2, 2));
+        assertFalse(subject.reserve(d1, 2));
+    }
+
+    @Test
+    public void ignoresTimePortionOfDate() {
+        MaitreD subject = new MaitreD(4);
+        Date d1 = new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime();
+        d1.setHours(1);
+        Date d2 = new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime();
+        d2.setHours(2);
+        subject.reserve(d1, 3);
+
+        assertFalse(subject.reserve(d2, 3));
     }
 
     private static Date arbitraryDate() {
