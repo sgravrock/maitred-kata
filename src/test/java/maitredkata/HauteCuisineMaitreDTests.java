@@ -24,6 +24,30 @@ public class HauteCuisineMaitreDTests {
         assertFalse(subject.reserve(arbitraryDate(), 5));
     }
 
+    @Test
+    public void rejectsSecondReservationWhenTableUsed() {
+        HauteCuisineMaitreD subject = new HauteCuisineMaitreD(Arrays.asList(2, 4));
+        Date date = arbitraryDate();
+        subject.reserve(date, 4);
+
+        assertFalse(subject.reserve(date, 3));
+    }
+
+    @Test
+    public void acceptsSecondReservationWhenTableAvailalabe() {
+        HauteCuisineMaitreD subject1 = new HauteCuisineMaitreD(Arrays.asList(2, 4));
+        Date date = arbitraryDate();
+        subject1.reserve(date, 4);
+
+        assertTrue(subject1.reserve(date, 2));
+
+        // The reverse order should also work
+        HauteCuisineMaitreD subject2 = new HauteCuisineMaitreD(Arrays.asList(2, 4));
+        subject1.reserve(date, 2);
+
+        assertTrue(subject1.reserve(date, 4));
+    }
+
     private static Date arbitraryDate() {
         return new Date(0);
     }
