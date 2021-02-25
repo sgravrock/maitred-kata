@@ -1,25 +1,28 @@
 package maitredkata;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HauteCuisineMaitreD {
     private final List<Integer> _tableSizes;
-    private final List<Integer> _reservations;
+    private final Map<Date, List<Integer>> _reservations;
 
     public HauteCuisineMaitreD(List<Integer> tableSizes) {
         _tableSizes = tableSizes;
-        _reservations = new ArrayList<>();
+        _reservations = new HashMap<>();
     }
 
     public boolean reserve(Date date, int qty) {
+        date = DateUtil.removeTimePortion(date);
+        if (!_reservations.containsKey(date)) {
+            _reservations.put(date, new ArrayList<>());
+        }
+
         if (!canReserve(date, qty)) {
             return false;
         }
 
-        _reservations.add(qty);
+        _reservations.get(date).add(qty);
         return true;
     }
 
@@ -31,7 +34,7 @@ public class HauteCuisineMaitreD {
         List<Integer> unassignedTables = _tableSizes.stream()
                 .sorted()
                 .collect(Collectors.toList());
-        List<Integer> reservationsIncludingNew = new ArrayList<>(_reservations);
+        List<Integer> reservationsIncludingNew = new ArrayList<>(_reservations.get(date));
         reservationsIncludingNew.add(qty);
 
         for (Integer rq: reservationsIncludingNew) {

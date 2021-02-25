@@ -13,7 +13,7 @@ public class BoutiqueMaitreD {
     }
 
     public boolean reserve(Date date, int qty) {
-        date = removeTimePortion(date);
+        date = DateUtil.removeTimePortion(date);
         int numReserved = _numReservedPerDay.getOrDefault(date, 0);
         int newNumReserved = numReserved + qty;
 
@@ -23,16 +23,5 @@ public class BoutiqueMaitreD {
         } else {
             return false;
         }
-    }
-
-    private static Date removeTimePortion(Date date) {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-
-        return cal.getTime();
     }
 }
