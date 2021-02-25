@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class HauteCuisineMaitreD {
     private final List<Integer> _tableSizes;
-    private final Map<Date, List<Integer>> _reservations;
+    private final DayMap<List<Integer>> _reservations;
 
     public HauteCuisineMaitreD(int... tableSizes) {
         _tableSizes = new ArrayList<>();
@@ -14,15 +14,10 @@ public class HauteCuisineMaitreD {
             _tableSizes.add(t);
         }
 
-        _reservations = new HashMap<>();
+        _reservations = new DayMap<>(() -> new ArrayList<>());
     }
 
     public boolean reserve(Date date, int qty) {
-        date = DateUtil.removeTimePortion(date);
-        if (!_reservations.containsKey(date)) {
-            _reservations.put(date, new ArrayList<>());
-        }
-
         if (!canReserve(date, qty)) {
             return false;
         }

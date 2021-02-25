@@ -4,17 +4,16 @@ import java.util.*;
 
 
 public class BoutiqueMaitreD {
-    private int _tableSize;
-    private Map<Date, Integer> _numReservedPerDay;
+    private final int _tableSize;
+    private final DayMap<Integer> _numReservedPerDay;
 
     public BoutiqueMaitreD(int tableSize) {
         _tableSize = tableSize;
-        _numReservedPerDay = new HashMap<>();
+        _numReservedPerDay = new DayMap<>(0);
     }
 
     public boolean reserve(Date date, int qty) {
-        date = DateUtil.removeTimePortion(date);
-        int numReserved = _numReservedPerDay.getOrDefault(date, 0);
+        int numReserved = _numReservedPerDay.get(date);
         int newNumReserved = numReserved + qty;
 
         if (newNumReserved <= _tableSize) {
