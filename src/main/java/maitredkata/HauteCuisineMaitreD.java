@@ -3,7 +3,6 @@ package maitredkata;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public class HauteCuisineMaitreD {
     private final List<Integer> _tableSizes;
@@ -29,25 +28,25 @@ public class HauteCuisineMaitreD {
         reservationsIncludingNew.add(qty);
 
         for (Integer rq: reservationsIncludingNew) {
-            Optional<Integer> i = findFirstGreaterThanOrEqual(unassignedTables, rq);
+            int i = findFirstGreaterThanOrEqual(unassignedTables, rq);
 
-            if (i.isPresent()) {
-                unassignedTables.remove(i);
-            } else {
+            if (i == -1) {
                 return false;
+            } else {
+                unassignedTables.remove(i);
             }
         }
 
         return true;
     }
 
-    private Optional<Integer> findFirstGreaterThanOrEqual(List<Integer> haystack, Integer needle) {
+    private int findFirstGreaterThanOrEqual(List<Integer> haystack, Integer needle) {
         for (int i = 0; i < haystack.size(); i++) {
             if (haystack.get(i) >= needle) {
-                return Optional.of(i);
+                return i;
             }
         }
 
-        return Optional.empty();
+        return -1;
     }
 }
