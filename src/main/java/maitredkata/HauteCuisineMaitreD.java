@@ -3,6 +3,7 @@ package maitredkata;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HauteCuisineMaitreD {
     private final List<Integer> _tableSizes;
@@ -23,7 +24,13 @@ public class HauteCuisineMaitreD {
     }
 
     private boolean canReserve(Date date, int qty) {
-        List<Integer> unassignedTables = new ArrayList<>(_tableSizes);
+        // Sort the table sizes so we assign each party to the smallest table
+        // that fits. This avoids e.g. a party of 4 not being able to be seated
+        // because a party of 2 was previously seated at the only 4 top when
+        // there was a 2 top availabe.
+        List<Integer> unassignedTables = _tableSizes.stream()
+                .sorted()
+                .collect(Collectors.toList());
         List<Integer> reservationsIncludingNew = new ArrayList<>(_reservations);
         reservationsIncludingNew.add(qty);
 
