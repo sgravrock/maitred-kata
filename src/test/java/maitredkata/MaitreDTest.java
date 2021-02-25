@@ -31,6 +31,22 @@ public class MaitreDTest {
         assertTrue(subject.reserve(arbitraryDate(), 13));
     }
 
+    @Test
+    public void rejectsSubsequentReservationThatExceedsTableSize() {
+        MaitreD subject = new MaitreD(4);
+        Date date = arbitraryDate();
+        subject.reserve(date, 2);
+        assertFalse(subject.reserve(date, 3));
+    }
+
+    @Test
+    public void acceptsSubsequentReservationThatDoNotExceedTableSize() {
+        MaitreD subject = new MaitreD(4);
+        Date date = arbitraryDate();
+        subject.reserve(date, 2);
+        assertTrue(subject.reserve(date, 2));
+    }
+
     private static Date arbitraryDate() {
         return new Date(0);
     }
