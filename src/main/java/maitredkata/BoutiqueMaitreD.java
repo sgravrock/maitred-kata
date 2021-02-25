@@ -3,11 +3,11 @@ package maitredkata;
 import java.util.*;
 
 
-public class MaitreD {
+public class BoutiqueMaitreD {
     private int _tableSize;
     private Map<Date, Integer> _numReservedPerDay;
 
-    public MaitreD(int tableSize) {
+    public BoutiqueMaitreD(int tableSize) {
         _tableSize = tableSize;
         _numReservedPerDay = new HashMap<>();
     }
