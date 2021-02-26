@@ -3,26 +3,16 @@ package maitredkata;
 import java.util.*;
 
 
-public class BoutiqueMaitreD {
+public class BoutiqueMaitreD extends AbstractMaitreD {
     private final int _tableSize;
-    private final DayMap _reservations;
 
     public BoutiqueMaitreD(int tableSize) {
+        super();
         _tableSize = tableSize;
-        _reservations = new DayMap();
     }
 
-    public boolean reserve(Date date, int qty) {
-        Reservation reservation = new Reservation(qty);
-        if (!canReserve(date, reservation)) {
-            return false;
-        }
-
-        _reservations.get(date).add(new Reservation(qty));
-        return true;
-    }
-
-    private boolean canReserve(Date date, Reservation newReservation) {
+    @Override
+    protected boolean canReserve(Date date, Reservation newReservation) {
         int numReserved = numReservedForDay(date);
         int newNumReserved = numReserved + newReservation.getNumDiners();
         return newNumReserved <= _tableSize;

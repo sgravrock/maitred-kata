@@ -3,31 +3,21 @@ package maitredkata;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class HauteCuisineMaitreD {
+public class HauteCuisineMaitreD extends AbstractMaitreD {
     private final List<Integer> _tableSizes;
-    private final DayMap _reservations;
 
     public HauteCuisineMaitreD(int... tableSizes) {
+        super();
+
         _tableSizes = new ArrayList<>();
 
         for (int t: tableSizes) {
             _tableSizes.add(t);
         }
-
-        _reservations = new DayMap();
     }
 
-    public boolean reserve(Date date, int qty) {
-        Reservation reservation = new Reservation(qty);
-        if (!canReserve(date, reservation)) {
-            return false;
-        }
-
-        _reservations.get(date).add(reservation);
-        return true;
-    }
-
-    private boolean canReserve(Date date, Reservation newReservation) {
+    @Override
+    protected boolean canReserve(Date date, Reservation newReservation) {
         // Sort the table sizes so we assign each party to the smallest table
         // that fits. This avoids e.g. a party of 4 not being able to be seated
         // because a party of 2 was previously seated at the only 4 top when
