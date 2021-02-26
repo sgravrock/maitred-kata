@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class HauteCuisineMaitreD {
     private final List<Integer> _tableSizes;
-    private final DayMap<List<Reservation>> _reservations;
+    private final DayMap _reservations;
 
     public HauteCuisineMaitreD(int... tableSizes) {
         _tableSizes = new ArrayList<>();
@@ -14,7 +14,7 @@ public class HauteCuisineMaitreD {
             _tableSizes.add(t);
         }
 
-        _reservations = new DayMap<>(() -> new ArrayList<>());
+        _reservations = new DayMap();
     }
 
     public boolean reserve(Date date, int qty) {

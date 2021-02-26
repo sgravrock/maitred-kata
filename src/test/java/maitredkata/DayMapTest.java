@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class DayMapTest {
     @Test
     public void insertsDefaultWhenNotSet() {
-        DayMap<List<Reservation>> subject = new DayMap<>(() -> new ArrayList());
+        DayMap subject = new DayMap();
         Date k = new Date(0);
         List<Reservation> list = subject.get(k);
         assertEquals(Collections.emptyList(), list);
@@ -20,7 +20,7 @@ public class DayMapTest {
 
     @Test
     public void providesExistingValueWhenSet() {
-        DayMap<List<Reservation>> subject = new DayMap<>(() -> new ArrayList());
+        DayMap subject = new DayMap();
         Date k = new Date(0);
         Reservation r1 = new Reservation(42);
         Reservation r2 = new Reservation(17);
@@ -36,7 +36,7 @@ public class DayMapTest {
 
     @Test
     public void ignoresTimePortionOfDate() {
-        DayMap<List<Reservation>> subject = new DayMap<>(() -> new ArrayList<>());
+        DayMap subject = new DayMap();
         Date d1 = new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime();
         d1.setHours(1);
         Date d2 = new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime();

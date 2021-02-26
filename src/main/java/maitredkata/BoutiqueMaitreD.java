@@ -5,11 +5,11 @@ import java.util.*;
 
 public class BoutiqueMaitreD {
     private final int _tableSize;
-    private final DayMap<List<Reservation>> _reservations;
+    private final DayMap _reservations;
 
     public BoutiqueMaitreD(int tableSize) {
         _tableSize = tableSize;
-        _reservations = new DayMap<>(() -> new ArrayList<>());
+        _reservations = new DayMap();
     }
 
     public boolean reserve(Date date, int qty) {
