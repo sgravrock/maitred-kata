@@ -10,10 +10,6 @@ public class DayMap<TValue> {
     private Map<Date, TValue> _storage;
     private ValueCreator<TValue> _valueCreator;
 
-    public DayMap(TValue defaultValue) {
-        this(() -> defaultValue);
-    }
-
     public DayMap(ValueCreator<TValue> valueCreator) {
         _storage = new HashMap<>();
         _valueCreator = valueCreator;
@@ -29,11 +25,6 @@ public class DayMap<TValue> {
             _storage.put(key, value);
             return value;
         }
-    }
-
-    public void put(Date key, TValue value) {
-        key = removeTimePortion(key);
-        _storage.put(key, value);
     }
 
     private static Date removeTimePortion(Date date) {
