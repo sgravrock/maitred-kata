@@ -5,22 +5,32 @@ import java.util.*;
 
 public class BoutiqueMaitreD {
     private final int _tableSize;
-    private final DayMap<Integer> _numReservedPerDay;
+    private final DayMap<List<Reservation>> _reservations;
 
     public BoutiqueMaitreD(int tableSize) {
         _tableSize = tableSize;
-        _numReservedPerDay = new DayMap<>(0);
+        _reservations = new DayMap<>(() -> new ArrayList<>());
     }
 
     public boolean reserve(Date date, int qty) {
-        int numReserved = _numReservedPerDay.get(date);
-        int newNumReserved = numReserved + qty;
-
-        if (newNumReserved <= _tableSize) {
-            _numReservedPerDay.put(date, newNumReserved);
-            return true;
-        } else {
+        Reservation reservation = new Reservation(qty);
+        if (!canReserve(date, reservation)) {
             return false;
         }
+
+        _reservations.get(date).add(new Reservation(qty));
+        return true;
+    }
+
+    private boolean canReserve(Date date, Reservation newReservation) {
+        int numReserved = numReservedForDay(date);
+        int newNumReserved = numReserved + newReservation.getNumDiners();
+        return newNumReserved <= _tableSize;
+    }
+
+    private int numReservedForDay(Date date) {
+        return _reservations.get(date).stream()
+                .map(r -> r.getNumDiners())
+                .reduce(0, (a, b) -> a + b);
     }
 }
