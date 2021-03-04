@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class HauteCuisineMaitreD extends AbstractMaitreD {
     private final List<Integer> _tableSizes;
-    private Integer _seatingDurationMins;
+    private TableBookingStrategy _tableBookingStrategy;
 
     // For restaurants with only one seating.
     public HauteCuisineMaitreD(int[] tableSizes) {
@@ -15,7 +15,12 @@ public class HauteCuisineMaitreD extends AbstractMaitreD {
     public HauteCuisineMaitreD(int[] tableSizes, Integer seatingDurationMins) {
         super();
 
-        _seatingDurationMins = seatingDurationMins;
+        if (seatingDurationMins == null) {
+            _tableBookingStrategy = new SingleSeatingStrategy();
+        } else {
+            _tableBookingStrategy = new MultipleSeatingStrategy(seatingDurationMins);
+        }
+
         _tableSizes = new ArrayList<>();
 
         for (int t: tableSizes) {
@@ -73,27 +78,8 @@ public class HauteCuisineMaitreD extends AbstractMaitreD {
             if (capacity < reservation.getNumDiners()) {
                 return false;
             } else {
-                return !isBookedAt(reservation.getDate());
+                return _tableBookingStrategy.canAccept(reservation, this.reservations);
             }
-        }
-
-        private boolean isBookedAt(Date date) {
-            if (_seatingDurationMins == null) { // single seating
-                return !reservations.isEmpty();
-            }
-
-            return reservations.stream()
-                    .anyMatch(res -> {
-                        Date end = addMinutes(res.getDate(), _seatingDurationMins);
-                        return date.compareTo(res.getDate()) >= 0 && date.compareTo(end) < 0;
-                    });
-        }
-
-        private Date addMinutes(Date date, int minutes) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.add(Calendar.MINUTE, minutes);
-            return cal.getTime();
         }
     }
 }
