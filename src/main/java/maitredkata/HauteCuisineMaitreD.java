@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 public class HauteCuisineMaitreD extends AbstractMaitreD {
     private final List<Integer> _tableSizes;
 
-    public HauteCuisineMaitreD(int... tableSizes) {
+    public HauteCuisineMaitreD(int[] tableSizes) {
         super();
 
         _tableSizes = new ArrayList<>();
