@@ -13,7 +13,7 @@ public class DayMapTest {
         Date k = new Date(0);
         List<Reservation> list = subject.get(k);
         assertEquals(Collections.emptyList(), list);
-        Reservation r = new Reservation(42);
+        Reservation r = new Reservation(arbitraryDate(), 42);
         list.add(r);
         assertEquals(Collections.singletonList(r), subject.get(k));
     }
@@ -22,8 +22,8 @@ public class DayMapTest {
     public void providesExistingValueWhenSet() {
         DayMap subject = new DayMap();
         Date k = new Date(0);
-        Reservation r1 = new Reservation(42);
-        Reservation r2 = new Reservation(17);
+        Reservation r1 = new Reservation(arbitraryDate(), 42);
+        Reservation r2 = new Reservation(arbitraryDate(), 17);
 
         subject.get(k).add(r1);
         subject.get(k).add(r2);
@@ -41,9 +41,13 @@ public class DayMapTest {
         d1.setHours(1);
         Date d2 = new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime();
         d2.setHours(2);
-        Reservation r = new Reservation(42);
+        Reservation r = new Reservation(arbitraryDate(), 42);
         subject.get(d1).add(r);
 
         assertEquals(Collections.singletonList(r), subject.get(d2));
+    }
+
+    private static Date arbitraryDate() {
+        return new Date(0);
     }
 }

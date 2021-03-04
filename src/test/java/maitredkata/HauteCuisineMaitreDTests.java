@@ -71,9 +71,65 @@ public class HauteCuisineMaitreDTests {
 
         assertFalse(subject.reserve(d2, 3));
     }
-    
+
+
+    @Test
+    public void supportsMultipleSeatings() {
+        HauteCuisineMaitreD subject = new HauteCuisineMaitreD(new int[]{4}, 120);
+        Date d1 = arbitraryMidnight();
+        Date d2 = (Date) d1.clone();
+        d1.setHours(18);
+        d1.setMinutes(0);
+        d2.setHours(20);
+        d2.setMinutes(0);
+        subject.reserve(d1, 4);
+
+        assertTrue(subject.reserve(d2, 3));
+    }
+
+    @Test
+    public void rejectsOverlappingBookingsWithMultipleSeatings() {
+        HauteCuisineMaitreD subject = new HauteCuisineMaitreD(new int[]{4}, 120);
+        Date d1 = arbitraryMidnight();
+        Date d2 = (Date) d1.clone();
+        d1.setHours(18);
+        d1.setMinutes(0);
+        d2.setHours(19);
+        d2.setMinutes(59);
+        subject.reserve(d1, 4);
+
+        assertFalse(subject.reserve(d2, 3));
+    }
+
+    @Test
+    public void combinesMultipleSeatingsAndTables() {
+        HauteCuisineMaitreD subject = new HauteCuisineMaitreD(new int[]{2, 4}, 150);
+        Date d1 = arbitraryMidnight();
+        d1.setHours(18);
+        d1.setMinutes(0);
+        Date d2 = (Date) d1.clone();
+        d2.setHours(17);
+        d2.setMinutes(45);
+        Date d3 = (Date) d1.clone();
+        d3.setHours(20);
+        d2.setMinutes(0);
+        subject.reserve(d1, 2);
+        subject.reserve(d2, 2);
+
+        assertTrue(subject.reserve(d3, 3));
+    }
 
     private static Date arbitraryDate() {
         return new Date(0);
+    }
+
+    private static Date arbitraryMidnight() {
+        Calendar cal = new GregorianCalendar(2021, Calendar.JANUARY, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        return cal.getTime();
     }
 }

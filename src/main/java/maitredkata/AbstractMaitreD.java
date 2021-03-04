@@ -11,7 +11,7 @@ public abstract class AbstractMaitreD {
     }
 
     public boolean reserve(Date date, int qty) {
-        Reservation reservation = new Reservation(qty);
+        Reservation reservation = new Reservation(date, qty);
         if (!canReserve(date, reservation)) {
             return false;
         }
