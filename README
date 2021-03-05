@@ -1,0 +1,6 @@
+The Maitre D kata in Java:
+https://blog.ploeh.dk/2020/01/27/the-maitre-d-kata/
+
+The main branch of this repo is just a starting point. Each run through is on
+one of the numbered branches. To start a new run, create a new branch from 
+the head of main.
