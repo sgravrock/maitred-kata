@@ -75,11 +75,7 @@ public class HauteCuisineMaitreD extends AbstractMaitreD {
         }
 
         boolean canAccept(Reservation reservation) {
-            if (capacity < reservation.getNumDiners()) {
-                return false;
-            } else {
-                return _tableBookingStrategy.canAccept(reservation, this.reservations);
-            }
+            return _tableBookingStrategy.canAccept(reservation, this.reservations, this.capacity);
         }
     }
 }

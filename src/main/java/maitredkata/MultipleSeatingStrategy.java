@@ -14,8 +14,13 @@ public class MultipleSeatingStrategy implements TableBookingStrategy {
     @Override
     public boolean canAccept(
             Reservation newReservation,
-            List<Reservation> existingSameDayReservations
+            List<Reservation> existingSameDayReservations,
+            int tableCapacity
     ) {
+        if (tableCapacity < newReservation.getNumDiners()) {
+            return false;
+        }
+
         Date date = newReservation.getDate();
         boolean hasConflict = existingSameDayReservations.stream()
                 .anyMatch(res -> {

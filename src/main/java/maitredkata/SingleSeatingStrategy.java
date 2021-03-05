@@ -6,8 +6,10 @@ public class SingleSeatingStrategy implements TableBookingStrategy {
     @Override
     public boolean canAccept(
             Reservation newReservation,
-            List<Reservation> existingSameDayReservations
+            List<Reservation> existingSameDayReservations,
+            int tableCapacity
     ) {
-        return existingSameDayReservations.isEmpty();
+        return tableCapacity >= newReservation.getNumDiners() &&
+                existingSameDayReservations.isEmpty();
     }
 }
