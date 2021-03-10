@@ -2,6 +2,7 @@ package maitredkata;
 
 import org.junit.Test;
 
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -83,7 +84,40 @@ public class BoutiqueMaitreDTests {
         assertFalse(subject.reserve(d2, 3));
     }
 
+    @Test
+    public void withMultipleSeatingTimes_rejectsTimesThatDontMatchAnySeating() {
+        BoutiqueMaitreD subject = new BoutiqueMaitreD(4, LocalTime.of(19, 0));
+        Date okDate = arbitraryDate();
+        okDate.setHours(19);
+        okDate.setMinutes(0);
+        assertTrue(subject.reserve(okDate, 1));
+        Date badDate = arbitraryDate();
+        badDate.setHours(18);
+        assertFalse(subject.reserve(badDate, 1));
+    }
+
+    @Test
+    public void withMultipleSeatingTimes_evaluatesEachSeatingSeparately() {
+        BoutiqueMaitreD subject = new BoutiqueMaitreD(
+                4,
+                LocalTime.of(19, 0),
+                LocalTime.of(20, 30)
+        );
+        Date d1 = arbitraryDate();
+        Date d2 = (Date) d1.clone();
+        d1.setHours(19);
+        d1.setMinutes(0);
+        d2.setHours(20);
+        d2.setMinutes(30);
+
+        assertTrue(subject.reserve(d1, 3));
+        assertFalse(subject.reserve(d1, 2));
+        assertTrue(subject.reserve(d2, 4));
+    }
+
     private static Date arbitraryDate() {
-        return new Date(0);
+        // Any time that's >= 1 day after epoch
+        // (so we don't underflow when setting hours) will do.
+        return new Date(1577931236);
     }
 }

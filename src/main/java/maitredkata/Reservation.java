@@ -1,5 +1,7 @@
 package maitredkata;
 
+import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Reservation {
@@ -17,5 +19,11 @@ public class Reservation {
 
     public Date getDate() {
         return _date;
+    }
+
+    public LocalTime getTimeOfDay() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getDate());
+        return LocalTime.of(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
     }
 }
