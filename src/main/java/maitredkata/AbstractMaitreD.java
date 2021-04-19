@@ -1,5 +1,7 @@
 package maitredkata;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,17 +26,17 @@ public class AbstractMaitreD {
         }
     }
 
-    public boolean reserve(Date date, int qty) {
-        Reservation reservation = new Reservation(date, qty);
-        if (!canReserve(date, reservation)) {
+    public boolean reserve(LocalDateTime dateTime, int qty) {
+        Reservation reservation = new Reservation(dateTime, qty);
+        if (!canReserve(reservation)) {
             return false;
         }
 
-        _reservations.get(date).add(reservation);
+        _reservations.get(reservation.getDate()).add(reservation);
         return true;
     }
 
-    private boolean canReserve(Date date, Reservation newReservation) {
+    private boolean canReserve(Reservation newReservation) {
         // Sort the table sizes so we assign each party to the smallest table
         // that fits. This avoids e.g. a party of 4 not being able to be seated
         // because a party of 2 was previously seated at the only 4 top when
@@ -43,7 +45,9 @@ public class AbstractMaitreD {
                 .sorted()
                 .map(size -> new Table(size))
                 .collect(Collectors.toList());
-        List<Reservation> reservationsIncludingNew = new ArrayList<>(_reservations.get(date));
+        List<Reservation> reservationsIncludingNew = new ArrayList<>(
+                _reservations.get(newReservation.getDate())
+        );
         reservationsIncludingNew.add(newReservation);
 
         for (Reservation res: reservationsIncludingNew) {

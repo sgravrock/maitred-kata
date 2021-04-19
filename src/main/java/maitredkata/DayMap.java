@@ -1,17 +1,18 @@
 package maitredkata;
 
+import java.time.LocalDate;
 import java.util.*;
 
+// TODO: Might make this more abstract? DefaultingMap<K, V> w/ default builder?
+// Or more concrete? dayMap.add(reservation) would be nice
 public class DayMap {
-    private Map<Date, List<Reservation>> _storage;
+    private Map<LocalDate, List<Reservation>> _storage;
 
     public DayMap() {
         _storage = new HashMap<>();
     }
 
-    public List<Reservation> get(Date key) {
-        key = removeTimePortion(key);
-
+    public List<Reservation> get(LocalDate key) {
         if (_storage.containsKey(key)) {
             return _storage.get(key);
         } else {
@@ -20,16 +21,4 @@ public class DayMap {
             return value;
         }
     }
-
-    private static Date removeTimePortion(Date date) {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-
-        return cal.getTime();
-    }
-
 }

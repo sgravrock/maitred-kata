@@ -1,15 +1,15 @@
 package maitredkata;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Reservation {
-    private final Date _date;
+    private final LocalDateTime _dateTime;
     private final int _numDiners;
 
-    public Reservation(Date date, int numDiners) {
-        _date = date;
+    public Reservation(LocalDateTime dateTime, int numDiners) {
+        _dateTime = dateTime;
         _numDiners = numDiners;
     }
 
@@ -17,13 +17,25 @@ public class Reservation {
         return _numDiners;
     }
 
-    public Date getDate() {
-        return _date;
+    public LocalDateTime getDateTime() {
+        return _dateTime;
+    }
+
+    public LocalDate getDate() {
+        return _dateTime.toLocalDate();
     }
 
     public LocalTime getTimeOfDay() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(getDate());
-        return LocalTime.of(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+        return _dateTime.toLocalTime();
+    }
+
+    public boolean overlaps(Reservation other, int durationMins) {
+        if (_dateTime.isBefore(other._dateTime)) {
+            LocalDateTime end = _dateTime.plusMinutes(durationMins);
+            return end.isAfter(other._dateTime);
+        } else {
+            LocalDateTime otherEnd = other._dateTime.plusMinutes(durationMins);
+            return otherEnd.isAfter(_dateTime);
+        }
     }
 }
