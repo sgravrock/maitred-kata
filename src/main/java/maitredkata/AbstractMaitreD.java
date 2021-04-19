@@ -32,7 +32,7 @@ public class AbstractMaitreD {
             return false;
         }
 
-        _reservations.get(reservation.getDate()).add(reservation);
+        _reservations.addReservation(reservation);
         return true;
     }
 
