@@ -7,9 +7,11 @@ import java.util.stream.Collectors;
 public class CommonTableSeatingStrategy implements TableBookingStrategy {
     private List<LocalTime> _seatings;
 
-    // seatings may be empty, in which case a single seating is assumed and
-    // the time of reservations won't be checked.
-    public CommonTableSeatingStrategy(List<LocalTime> seatings) {
+    public CommonTableSeatingStrategy(List<LocalTime> seatings) throws InvalidSeatingsException {
+        if (seatings.size() == 0) {
+            throw new InvalidSeatingsException();
+        }
+
         _seatings = seatings;
     }
 
@@ -24,10 +26,6 @@ public class CommonTableSeatingStrategy implements TableBookingStrategy {
     }
 
     private boolean isValidTime(Reservation res) {
-        if (_seatings.size() == 0) {
-            return true;
-        }
-
         return _seatings.contains(res.getTimeOfDay());
     }
 
@@ -44,7 +42,7 @@ public class CommonTableSeatingStrategy implements TableBookingStrategy {
     }
 
     private boolean sameSeating(Reservation r, Reservation newReservation) {
-        return _seatings.size() == 0 || r.getTimeOfDay() == newReservation.getTimeOfDay();
+        return r.getTimeOfDay() == newReservation.getTimeOfDay();
     }
 
     private int numDinersAtSameSeating(

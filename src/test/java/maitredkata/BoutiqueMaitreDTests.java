@@ -14,31 +14,31 @@ import static org.junit.Assert.*;
 
 public class BoutiqueMaitreDTests {
     @Test
-    public void acceptsSingleReservationBelowTableSize() {
+    public void acceptsSingleReservationBelowTableSize() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(12);
         assertTrue(subject.reserve(arbitraryDateTime(), 1));
     }
 
     @Test
-    public void acceptsSingleReservationAtTableSize() {
+    public void acceptsSingleReservationAtTableSize() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(12);
         assertTrue(subject.reserve(arbitraryDateTime(), 12));
     }
 
     @Test
-    public void rejectsSingleReservationAboveTableSize() {
+    public void rejectsSingleReservationAboveTableSize() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(12);
         assertFalse(subject.reserve(arbitraryDateTime(), 13));
     }
 
     @Test
-    public void usesConfiguredTableSize() {
+    public void usesConfiguredTableSize() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(13);
         assertTrue(subject.reserve(arbitraryDateTime(), 13));
     }
 
     @Test
-    public void rejectsSecondReservationThatExceedsTableSize() {
+    public void rejectsSecondReservationThatExceedsTableSize() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(4);
         LocalDateTime when = arbitraryDateTime();
         subject.reserve(when, 2);
@@ -46,7 +46,7 @@ public class BoutiqueMaitreDTests {
     }
 
     @Test
-    public void acceptsSecondReservationThatDoesNotExceedTableSize() {
+    public void acceptsSecondReservationThatDoesNotExceedTableSize() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(4);
         LocalDateTime when = arbitraryDateTime();
         subject.reserve(when, 2);
@@ -65,7 +65,7 @@ public class BoutiqueMaitreDTests {
     }
 
     @Test
-    public void handlesMultipleDates() {
+    public void handlesMultipleDates() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(4);
         LocalDate d1 = LocalDate.of(2021, 1, 1);
         LocalDate d2 = LocalDate.of(2021, 1, 2);
@@ -76,7 +76,7 @@ public class BoutiqueMaitreDTests {
     }
 
     @Test
-    public void ignoresTimePortionOfDate() {
+    public void ignoresTimePortionOfDate() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(4);
         LocalDate d = LocalDate.of(2021, 1, 1);
         LocalDateTime t1 = LocalDateTime.of(d, LocalTime.of(1, 0));
@@ -87,7 +87,17 @@ public class BoutiqueMaitreDTests {
     }
 
     @Test
-    public void withMultipleSeatingTimes_rejectsTimesThatDontMatchAnySeating() {
+    public void ctorThrowsIfNoSeatingsProvided() {
+        try {
+            new BoutiqueMaitreD(1);
+            fail("Expected an InvalidSeatingsException but none was thrown");
+        } catch(InvalidSeatingsException e) {
+            // ok
+        }
+    }
+
+    @Test
+    public void rejectsTimesThatDontMatchAnySeating() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(4, LocalTime.of(19, 0));
         LocalDateTime ok = LocalDateTime.of(arbitraryDate(), LocalTime.of(19, 0));
         LocalDateTime bad = LocalDateTime.of(arbitraryDate(), LocalTime.of(18, 0));
@@ -96,7 +106,7 @@ public class BoutiqueMaitreDTests {
     }
 
     @Test
-    public void withMultipleSeatingTimes_evaluatesEachSeatingSeparately() {
+    public void evaluatesEachSeatingSeparately() throws Exception {
         BoutiqueMaitreD subject = new BoutiqueMaitreD(
                 4,
                 LocalTime.of(19, 0),

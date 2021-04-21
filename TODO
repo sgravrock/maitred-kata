@@ -1,2 +1,2 @@
+* Finish refactor to not treat 0 seatings as a special case
 * Switch to AssertJ matchers?
-* Pop stash and do that thing
