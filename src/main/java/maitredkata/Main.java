@@ -2,6 +2,7 @@ package maitredkata;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -29,6 +30,8 @@ public class Main {
                 break;
             } else if ("reserve".equals(words[0])) {
                 doReservationCmd(words, restaurant);
+            } else if ("list".equals(words[0])) {
+                doListCmd(words, restaurant);
             } else {
                 System.out.println("I don't know that command.");
             }
@@ -59,6 +62,25 @@ public class Main {
             System.out.println(reservation + " was accepted.");
         } else {
             System.out.println(reservation + " was not accepted.");
+        }
+    }
+
+    private static void doListCmd(String[] words, BoutiqueRestaurant restaurant) {
+        final String usage = "Usage: list";
+
+        if (words.length != 1) {
+            System.out.println(usage);
+            return;
+        }
+
+        List<Reservation> reservations = restaurant.getAllReservations();
+
+        if (reservations.size() == 0) {
+            System.out.println("There are no reservations.");
+        } else {
+            for (Reservation r : reservations) {
+                System.out.println(r);
+            }
         }
     }
 }
